@@ -14,8 +14,8 @@ Fixes blank icons for Steam games shortcuts
 ## Usage
 Fix icons in the current folder:
 
-```deno run --allow-net --allow-read --allow-write fix.ts```
+```deno run --allow-net --allow-read --allow-write https://deno.land/x/steam_blank_icon_fix@1.0.0/fix.ts```
 
 Fix icons in a specified folder:
 
-```deno run --allow-net --allow-read --allow-write fix.ts C:\Users\username\Desktop```
+```deno run --allow-net --allow-read --allow-write https://deno.land/x/steam_blank_icon_fix@1.0.0/fix.ts C:\Users\username\Desktop```
