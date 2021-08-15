@@ -1,4 +1,4 @@
-# steam-blank-icon-fix
+# steam_blank_icon_fix
 Fixes blank icons for Steam games shortcuts
 
 ## Requirements
