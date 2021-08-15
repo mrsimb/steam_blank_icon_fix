@@ -1,5 +1,5 @@
 const steamIconsPath = "C:/Program Files (x86)/Steam/steam/games";
-const searchPath = String(Deno.args[0]) || ".";
+const searchPath = String(Deno.args[0] || ".");
 
 console.log(`Steam icons path: "${steamIconsPath}"`);
 console.log(`Searching shortcuts in: "${searchPath}"\n`);
