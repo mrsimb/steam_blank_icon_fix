@@ -80,13 +80,15 @@ try {
       continue;
     }
 
+    // Thanks @Dark-talon for sharing this url
+    // https://github.com/mrsimb/steam_blank_icon_fix/issues/1#issuecomment-1897934510
     const iconUrl =
       `http://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/${appId}/${iconName}`;
 
     const iconResponse = await fetch(iconUrl).catch(() => null);
 
     if (!iconResponse?.ok) {
-      console.log(`✗ ${entry.name} - failed to fetch icon`);
+      console.log(`✗ ${entry.name} - failed to fetch icon (status code: ${res.status})`);
       continue;
     }
 
