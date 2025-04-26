@@ -1,23 +1,61 @@
-# steam_blank_icon_fix
-Fixes blank icons for Steam games shortcuts
-
-![6CCpJP2tiO](https://user-images.githubusercontent.com/7318420/129628247-d0a9cca8-a404-4987-ab69-ca4e6c35e2fb.gif)
+# steam-blank-icon-fix
+Fixes blank icons of Steam desktop shortcuts in Windows.
 
 ## Requirements
-[deno](https://deno.land/manual/getting_started/installation)
+[deno 2](https://deno.land/manual/getting_started/installation)
 
 ## Permissions
-```--allow-net``` Uses [steamdb.info](https://steamdb.info) to find and download icons
+`-N` Loads icon files from Steam CDN
 
-```--allow-read``` Reads shortcuts and checks if they're broken
+`-R` Reads Steam folder and shortcut files
 
-```--allow-write``` Fixes broken shortcuts and recovers icon files in your Steam folder
+`-W` Fixes broken shortcuts and recovers icon files in your Steam folder
+
+`--allow-run` Runs `reg.exe` to find Steam installation path in Windows registry (only if default path wasn't found)
 
 ## Usage
+
+### Via command line
+
 Fix icons in the current folder:
 
-```deno run --allow-net --allow-read --allow-write https://deno.land/x/steam_blank_icon_fix@1.0.2/fix.ts```
+```cmd
+cd C:/Users/<username>/Desktop
 
-Fix icons in a specified folder:
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix
+```
 
-```deno run --allow-net --allow-read --allow-write https://deno.land/x/steam_blank_icon_fix@1.0.2/fix.ts C:\Users\username\Desktop```
+Fix in specific folders:
+
+```cmd
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix "C:/Users/<username>/Desktop/Games" "E:/Games"
+```
+
+Fix specific icons:
+
+```cmd
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix "E:/Games/Hades.url" "E:/Games/Cave Story.url"
+```
+
+Use `--steampath` flag to specify steam installation path (if auto detection fails):
+
+```cmd
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix --steampath="E:/Apps/Steam"
+```
+
+You can omit permission flags if you want to be asked before taking any action:
+
+```cmd
+deno run jsr:@mrsimb/steam-blank-icon-fix
+```
+
+
+### Via .bat script
+
+Create a file called `fix.bat` and paste this code:
+```cmd
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix %*
+pause
+```
+
+Then save it and just drag & drop a folder or files onto `fix.bat`.

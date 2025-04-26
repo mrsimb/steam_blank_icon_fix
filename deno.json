@@ -1,0 +1,10 @@
+{
+  "name": "@mrsimb/steam-blank-icon",
+  "version": "2.0.0",
+  "license": "MIT",
+  "exports": "./mod.ts",
+  "imports": {
+    "@std/cli": "jsr:@std/cli@^1.0.17",
+    "@std/path": "jsr:@std/path@^1.0.9"
+  }
+}
