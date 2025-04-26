@@ -1,5 +1,5 @@
-import { parseArgs } from "jsr:@std/cli/parse-args";
-import { join, resolve, extname } from "jsr:@std/path";
+import { parseArgs } from "jsr:@std/cli@1.0.17/parse-args";
+import { join, resolve, extname } from "jsr:@std/path@1.0.9";
 
 const DEFAULT_STEAM_PATH = "c:/program files (x86)/steam";
 
