@@ -1,7 +1,37 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
-import { join, resolve } from "jsr:@std/path";
+import { join, resolve, extname } from "jsr:@std/path";
 
 const DEFAULT_STEAM_PATH = "c:/program files (x86)/steam";
+
+async function main() {
+  const flags = parseArgs(Deno.args, { string: ["steampath"] });
+
+  const steamIconsPath = await getSteamIconsPath(flags.steampath)
+    .catch((error) => {
+      console.log(error.message);
+      console.log(
+        `❔ Do you have Steam installed? Try specifying the Steam path manually by adding --steampath="path/to/your/steam"`,
+      );
+      Deno.exit(1);
+    });
+
+  const cwd = Deno.cwd();
+  const searchPaths = flags._.length ? flags._.map(String) : ["."];
+
+  for (const searchPath of searchPaths) {
+    await processPath(resolve(cwd, searchPath), steamIconsPath);
+  }
+
+  if (!totalCount) {
+    console.log(
+      `❔ No Steam shortcuts were found. Did you specify a correct path?`,
+    );
+  } else {
+    console.log(
+      `✨ Fixed ${fixedCount} of ${totalCount} shortcut icons`,
+    );
+  }
+}
 
 async function getSteamPathFromRegistry() {
   console.log("📖 Searching in Windows registry");
@@ -64,17 +94,14 @@ async function processShortcut(shortcutPath: string, steamIconsPath: string) {
   totalCount++;
 
   const iconPath = linkContent.match(/IconFile=(.+)/);
-
   if (!iconPath) {
     return console.log(`❌ ${shortcutPath} - icon file path missing\n`);
   }
 
   const iconName = iconPath[1].split("\\").pop()!;
-
   const hasIconFile = await Deno.stat(join(steamIconsPath, iconName))
     .then((info) => info.isFile)
     .catch(() => false);
-
   if (hasIconFile) {
     return; // Nothing to fix
   }
@@ -83,18 +110,15 @@ async function processShortcut(shortcutPath: string, steamIconsPath: string) {
   // https://github.com/mrsimb/steam_blank_icon_fix/issues/1#issuecomment-1897934510
   const iconUrl =
     `http://cdn.akamai.steamstatic.com/steamcommunity/public/images/apps/${appId}/${iconName}`;
-
   console.log(`🌐 Fetching ${iconName}`);
 
-  const iconBuffer = await fetch(iconUrl).then(res => res.arrayBuffer()).catch(() => null);
+  const iconBuffer = await fetch(iconUrl).then((res) => res.arrayBuffer())
+    .catch(() => null);
   if (!iconBuffer) {
-    return console.log(
-      `🚫 ${iconName} - failed to fetch\n`,
-    );
+    return console.log(`🚫 ${iconName} - failed to fetch\n`);
   }
 
   console.log(`💾 Saving ${iconName}`);
-
   await Deno.writeFile(
     join(steamIconsPath, iconName),
     new Uint8Array(iconBuffer),
@@ -111,40 +135,9 @@ async function processPath(path: string, steamIconsPath: string) {
     for await (const entry of Deno.readDir(path)) {
       await processPath(join(path, entry.name), steamIconsPath);
     }
-  } else if (info.isFile) {
+  } else if (info.isFile && extname(path) === ".url") {
     await processShortcut(path, steamIconsPath).catch((error) =>
       console.log(error)
-    );
-  }
-}
-
-async function main() {
-  const flags = parseArgs(Deno.args, { string: ["steampath"] });
-
-  const steamIconsPath = await getSteamIconsPath(flags.steampath).catch(
-    (error) => {
-      console.log(error.message);
-      console.log(
-        `❔ Do you have Steam installed? Try specifying the Steam path manually: deno run fix.ts --steampath="path/to/your/steam/folder"`,
-      );
-      Deno.exit(1);
-    },
-  );
-
-  const cwd = Deno.cwd();
-  const searchPaths = flags._.length ? flags._.map(String) : ["."];
-
-  for (const searchPath of searchPaths) {
-    await processPath(resolve(cwd, searchPath), steamIconsPath);
-  }
-
-  if (!totalCount) {
-    console.log(
-      `✨ No Steam shortcuts were found. Did you specify a correct path?`,
-    );
-  } else {
-    console.log(
-      `✨ ${fixedCount} of ${totalCount} Steam shortcuts were fixed!`,
     );
   }
 }
