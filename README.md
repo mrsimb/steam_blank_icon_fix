@@ -37,7 +37,7 @@ Fix specific icons:
 deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix "E:/Games/Hades.url" "E:/Games/Cave Story.url"
 ```
 
-Use `--steampath` flag to specify steam installation path:
+Use `--steampath` flag to specify steam installation path (if auto detection fails):
 
 ```cmd
 deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix --steampath="E:/Apps/Steam"
