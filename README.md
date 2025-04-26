@@ -1,4 +1,4 @@
-# steam-blank-icon-fix
+# steam-blank-icon
 Fixes blank icons of Steam desktop shortcuts in Windows.
 
 ## Requirements
@@ -22,31 +22,31 @@ Fix icons in the current folder:
 ```cmd
 cd C:/Users/<username>/Desktop
 
-deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon
 ```
 
 Fix in specific folders:
 
 ```cmd
-deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix "C:/Users/<username>/Desktop/Games" "E:/Games"
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon "C:/Users/<username>/Desktop/Games" "E:/Games"
 ```
 
 Fix specific icons:
 
 ```cmd
-deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix "E:/Games/Hades.url" "E:/Games/Cave Story.url"
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon "E:/Games/Hades.url" "E:/Games/Cave Story.url"
 ```
 
 Use `--steampath` flag to specify steam installation path (if auto detection fails):
 
 ```cmd
-deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix --steampath="E:/Apps/Steam"
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon --steampath="E:/Apps/Steam"
 ```
 
 You can omit permission flags if you want to be asked before taking any action:
 
 ```cmd
-deno run jsr:@mrsimb/steam-blank-icon-fix
+deno run jsr:@mrsimb/steam-blank-icon
 ```
 
 
@@ -54,7 +54,7 @@ deno run jsr:@mrsimb/steam-blank-icon-fix
 
 Create a file called `fix.bat` and paste this code:
 ```cmd
-deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon-fix %*
+deno run -N -R -W --allow-run jsr:@mrsimb/steam-blank-icon %*
 pause
 ```
 
